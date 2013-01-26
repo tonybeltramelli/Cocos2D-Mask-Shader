@@ -10,7 +10,7 @@ Getting started :
 * Don't forget to add the .fsh files to the "Copy Bundles Resources" in "Build Phases" tab;
 * Make sure that the .fsh files are not in the "Compile Sources";
 
-![Cocos2D-Mask-Shader - screen shot](https://raw.github.com/tonybeltramelli/Cocos2D-Mask-Shader/master/ShaderMask/Resources/screen_shot.jpg)
+![Cocos2D-Mask-Shader - preview](https://raw.github.com/tonybeltramelli/Cocos2D-Mask-Shader/master/ShaderMask/Resources/preview.jpg)
 
 Usage :
 ```objc
