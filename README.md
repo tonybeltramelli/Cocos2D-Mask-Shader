@@ -19,18 +19,16 @@ Usage :
         // example 1
         
         CCSprite *spriteToMask = [CCSprite spriteWithFile:@"image_to_mask.jpg"];
-        CCSprite *spriteMask = [TBSpriteMask spriteWithFile:@"mask.png"];
+        CCSprite *spriteMask = [CCSprite spriteWithFile:@"mask.png"];
         
         TBSpriteMask *maskedSprite = [[TBSpriteMask alloc] initWithSprite:spriteMask andMaskSprite:spriteToMask];
-        maskedSprite.position = ccp(size.width/2, size.height/2);
         [self addChild:maskedSprite];
         
         // example 2
         
-        CCSprite *spriteMask = [TBSpriteMask spriteWithFile:@"mask.png"];
+        CCSprite *spriteMask = [CCSprite spriteWithFile:@"mask.png"];
         
         TBSpriteMask *maskedSprite = [[TBSpriteMask alloc] initWithSprite:spriteMask andMaskFile:@"image_to_mask.jpg"];
-        maskedSprite.position = ccp(size.width/2, size.height/2);
         [self addChild:maskedSprite];
         
         // example 3
@@ -38,13 +36,11 @@ Usage :
         CCSprite *spriteToMask = [CCSprite spriteWithFile:@"image_to_mask.jpg"];
         
         TBSpriteMask *maskedSprite = [[TBSpriteMask alloc] initWithFile:@"mask.png" andMaskSprite:spriteToMask];
-        maskedSprite.position = ccp(size.width/2, size.height/2);
         [self addChild:maskedSprite];
         
         // example 4
         
         TBSpriteMask *maskedSprite = [[TBSpriteMask alloc] initWithFile:@"mask.png" andMaskFile:@"image_to_mask.jpg"];
-        maskedSprite.position = ccp(size.width/2, size.height/2);
         [self addChild:maskedSprite];
         
         //
@@ -53,18 +49,16 @@ Usage :
         // example 1
         
         CCSprite *spriteToMask = [CCSprite spriteWithFile:@"image_to_mask.jpg"];
-        CCSprite *spriteMask = [TBSpriteMask spriteWithFile:@"mask.png"];
+        CCSprite *spriteMask = [CCSprite spriteWithFile:@"mask.png"];
          
         TBSpriteMask *maskedSprite = [[TBSpriteMask alloc] initWithSprite:spriteMask andMaskSprite:spriteToMask andType:TRUE];
-        maskedSprite.position = ccp(size.width/2, size.height/2);
         [self addChild:maskedSprite];
         
         // example 2
         
-        CCSprite *spriteMask = [TBSpriteMask spriteWithFile:@"mask.png"];
+        CCSprite *spriteMask = [CCSprite spriteWithFile:@"mask.png"];
          
         TBSpriteMask *maskedSprite = [[TBSpriteMask alloc] initWithSprite:spriteMask andMaskFile:@"image_to_mask.jpg" andType:TRUE];
-        maskedSprite.position = ccp(size.width/2, size.height/2);
         [self addChild:maskedSprite];
         
         // example 3
@@ -72,14 +66,24 @@ Usage :
         CCSprite *spriteToMask = [CCSprite spriteWithFile:@"image_to_mask.jpg"];
          
         TBSpriteMask *maskedSprite = [[TBSpriteMask alloc] initWithFile:@"mask.png" andMaskSprite:spriteToMask andType:TRUE];
-        maskedSprite.position = ccp(size.width/2, size.height/2);
         [self addChild:maskedSprite];
          
         // example 4
         
         TBSpriteMask *maskedSprite = [[TBSpriteMask alloc] initWithFile:@"mask.png" andMaskFile:@"image_to_mask.jpg" andType:TRUE];
-        maskedSprite.position = ccp(size.width/2, size.height/2);
         [self addChild:maskedSprite];
+        
+        //
+        // EXAMPLES update
+        //
+        // example 1
+        
+        CCSprite *spriteMask = [CCSprite spriteWithFile:@"mask.png"];
+        [maskedSprite updateWithSprite:spriteMask];
+        
+        // example 2
+        
+        [maskedSprite updateWithFile:@"mask.png"];
 ```
 
 Have fun !

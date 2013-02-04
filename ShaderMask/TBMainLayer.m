@@ -10,6 +10,12 @@
 #import "TBSpriteMask.h"
 
 @implementation TBMainLayer
+{
+    TBSpriteMask *_maskedSpriteNegative;
+    TBSpriteMask *_maskedSpritePositive;
+    
+    BOOL _isFirstMask;
+}
 
 +(CCScene *) scene
 {
@@ -24,7 +30,14 @@
 - (id)init
 {
     self = [super init];
-    if (self) {
+    if (self)
+    {
+        #ifdef __CC_PLATFORM_IOS
+            self.isTouchEnabled = YES;
+        #elif defined(__CC_PLATFORM_MAC)
+            self.isMouseEnabled = YES;
+        #endif
+        
         CGSize size = [[CCDirector sharedDirector] winSize];
         
         // EXAMPLES MaskNegative
@@ -32,18 +45,16 @@
         // example 1
         /*
         CCSprite *spriteToMask = [CCSprite spriteWithFile:@"image_to_mask.jpg"];
-        CCSprite *spriteMask = [TBSpriteMask spriteWithFile:@"mask.png"];
+        CCSprite *spriteMask = [CCSprite spriteWithFile:@"mask.png"];
         
         TBSpriteMask *maskedSprite = [[TBSpriteMask alloc] initWithSprite:spriteMask andMaskSprite:spriteToMask];
-        maskedSprite.position = ccp(size.width/2, size.height/2);
         [self addChild:maskedSprite];
         */
         // example 2
         /*
-        CCSprite *spriteMask = [TBSpriteMask spriteWithFile:@"mask.png"];
+        CCSprite *spriteMask = [CCSprite spriteWithFile:@"mask.png"];
         
         TBSpriteMask *maskedSprite = [[TBSpriteMask alloc] initWithSprite:spriteMask andMaskFile:@"image_to_mask.jpg"];
-        maskedSprite.position = ccp(size.width/2, size.height/2);
         [self addChild:maskedSprite];
         */
         // example 3
@@ -51,13 +62,11 @@
         CCSprite *spriteToMask = [CCSprite spriteWithFile:@"image_to_mask.jpg"];
         
         TBSpriteMask *maskedSprite = [[TBSpriteMask alloc] initWithFile:@"mask.png" andMaskSprite:spriteToMask];
-        maskedSprite.position = ccp(size.width/2, size.height/2);
         [self addChild:maskedSprite];
-         */
+        */
         // example 4
         /*
         TBSpriteMask *maskedSprite = [[TBSpriteMask alloc] initWithFile:@"mask.png" andMaskFile:@"image_to_mask.jpg"];
-        maskedSprite.position = ccp(size.width/2, size.height/2);
         [self addChild:maskedSprite];
         */
         //
@@ -66,18 +75,16 @@
         // example 1
         /*
         CCSprite *spriteToMask = [CCSprite spriteWithFile:@"image_to_mask.jpg"];
-        CCSprite *spriteMask = [TBSpriteMask spriteWithFile:@"mask.png"];
+        CCSprite *spriteMask = [CCSprite spriteWithFile:@"mask.png"];
          
         TBSpriteMask *maskedSprite = [[TBSpriteMask alloc] initWithSprite:spriteMask andMaskSprite:spriteToMask andType:TRUE];
-        maskedSprite.position = ccp(size.width/2, size.height/2);
         [self addChild:maskedSprite];
         */
         // example 2
         /*
-        CCSprite *spriteMask = [TBSpriteMask spriteWithFile:@"mask.png"];
+        CCSprite *spriteMask = [CCSprite spriteWithFile:@"mask.png"];
          
         TBSpriteMask *maskedSprite = [[TBSpriteMask alloc] initWithSprite:spriteMask andMaskFile:@"image_to_mask.jpg" andType:TRUE];
-        maskedSprite.position = ccp(size.width/2, size.height/2);
         [self addChild:maskedSprite];
         */
         // example 3
@@ -85,31 +92,65 @@
         CCSprite *spriteToMask = [CCSprite spriteWithFile:@"image_to_mask.jpg"];
          
         TBSpriteMask *maskedSprite = [[TBSpriteMask alloc] initWithFile:@"mask.png" andMaskSprite:spriteToMask andType:TRUE];
-        maskedSprite.position = ccp(size.width/2, size.height/2);
         [self addChild:maskedSprite];
         */ 
         // example 4
         /*
         TBSpriteMask *maskedSprite = [[TBSpriteMask alloc] initWithFile:@"mask.png" andMaskFile:@"image_to_mask.jpg" andType:TRUE];
-        maskedSprite.position = ccp(size.width/2, size.height/2);
         [self addChild:maskedSprite];
         */
         
-        TBSpriteMask *maskedSpriteNegative = [[TBSpriteMask alloc] initWithFile:@"mask.png" andMaskFile:@"image_to_mask.jpg"];
-        maskedSpriteNegative.scale = 0.5;
-        maskedSpriteNegative.position = ccp(size.width/2 + 90, size.height/2 + 90);
-        [self addChild:maskedSpriteNegative];
+        _maskedSpriteNegative = [[TBSpriteMask alloc] initWithFile:@"mask.png" andMaskFile:@"image_to_mask.jpg"];
+        _maskedSpriteNegative.scale = 0.5;
+        [self addChild:_maskedSpriteNegative];
             
-        TBSpriteMask *maskedSpritePositive = [[TBSpriteMask alloc] initWithFile:@"mask.png" andMaskFile:@"image_to_mask.jpg" andType:TRUE];
-        maskedSpritePositive.scale = 0.5;
-        maskedSpritePositive.position = ccp(size.width/2 - 90, size.height/2 - 90);
-        [self addChild:maskedSpritePositive];
+        _maskedSpritePositive = [[TBSpriteMask alloc] initWithFile:@"mask.png" andMaskFile:@"image_to_mask.jpg" andType:TRUE];
+        _maskedSpritePositive.scale = 0.5;
+        _maskedSpritePositive.position = ccp(size.width/2, size.height/2);
+        [self addChild:_maskedSpritePositive];
+        
+        _isFirstMask = TRUE;
     }
     return self;
 }
 
+- (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    for( UITouch *touch in touches )
+    {
+        // EXAMPLES update
+        //
+        // example 1
+        /*
+         CCSprite *spriteMask = [CCSprite spriteWithFile:@"mask.png"];
+         [maskedSprite updateWithSprite:spriteMask];
+        */
+        // example 2
+        /*
+         [maskedSprite updateWithFile:@"mask.png"];
+        */
+        
+        if(_isFirstMask)
+        {
+            _isFirstMask = FALSE;
+            [_maskedSpriteNegative updateWithFile:@"mask2.png"];
+            [_maskedSpritePositive updateWithFile:@"mask2.png"];
+        }else{
+            _isFirstMask = TRUE;
+            [_maskedSpriteNegative updateWithFile:@"mask.png"];
+            [_maskedSpritePositive updateWithFile:@"mask.png"];
+        }
+    }
+}
+
 - (void)dealloc
 {
+    [_maskedSpriteNegative release];
+    _maskedSpriteNegative = nil;
+    
+    [_maskedSpritePositive release];
+    _maskedSpritePositive = nil;
+    
     [super dealloc];
 }
 

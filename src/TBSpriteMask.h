@@ -10,7 +10,8 @@
 
 @interface TBSpriteMask : CCSprite
 {
-    CCTexture2D * _maskTexture;
+    CCSprite*  _mask;
+    CCTexture2D* _maskTexture;
     GLuint _textureLocation;
     GLuint _maskLocation;
     BOOL _type;
@@ -25,5 +26,8 @@
 -(id)initWithSprite:(CCSprite*)sprite andMaskFile:(NSString*)maskFile andType:(BOOL)type;
 -(id)initWithFile:(NSString *)file andMaskFile:(NSString*)maskFile andType:(BOOL)type;
 -(id)initWithFile:(NSString *)file andMaskSprite:(CCSprite*)maskSprite andType:(BOOL)type;
+
+-(void)updateWithSprite:(CCSprite*)sprite;
+-(void)updateWithFile:(NSString *)file;
 
 @end

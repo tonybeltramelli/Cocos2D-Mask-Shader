@@ -8,6 +8,14 @@
 
 #import "TBSpriteMask.h"
 
+#define DRAW_SETUP()                                                                \
+do {                                                                                \
+    ccGLEnable( _mask.glServerState );                                              \
+    NSAssert1(_mask.shaderProgram, @"No shader program set for node: %@", _mask);   \
+    [_mask.shaderProgram use];                                                      \
+    [_mask.shaderProgram setUniformForModelViewProjectionMatrix];                   \
+} while(0)                                                                          \
+
 @implementation TBSpriteMask
 
 -(id) initWithSprite:(CCSprite*)sprite andMaskSprite:(CCSprite*)maskSprite
@@ -32,45 +40,52 @@
 
 -(id) initWithSprite:(CCSprite*)sprite andMaskSprite:(CCSprite*)maskSprite andType:(BOOL)type;
 {
-    self = [(TBSpriteMask *)sprite retain];
+    self = [super init];
     if (self) {
+        _mask = [sprite retain];
         _type = type;
-        [self buildMaskWithTexture:[[maskSprite texture] retain]];
+        [self builtWithTexture:_mask andTexture:[[maskSprite texture] retain]];
     }
-    
     return self;
 }
 
 -(id) initWithSprite:(CCSprite*)sprite andMaskFile:(NSString*)maskFile andType:(BOOL)type;
 {
-    self = [(TBSpriteMask *)sprite retain];
+    self = [super init];
     if(self){
+        _mask = [sprite retain];
         _type = type;
-        [self buildMaskWithTexture:[[CCTextureCache sharedTextureCache] addImage:maskFile]];
-    }
+        [self builtWithTexture:_mask andTexture:[[CCTextureCache sharedTextureCache] addImage:maskFile]];
+    }    
     return self;
 }
 
 -(id) initWithFile:(NSString *)file andMaskSprite:(CCSprite*)maskSprite andType:(BOOL)type;
 {
-    self = [super initWithFile:file];
+    self = [super init];
     if (self) {
+        _mask = [[CCSprite alloc] initWithFile:file];
         _type = type;
-        [self buildMaskWithTexture:[[maskSprite texture] retain]];
+        [self builtWithTexture:_mask andTexture:[[maskSprite texture] retain]];
     }
-    
     return self;
 }
 
 -(id) initWithFile:(NSString *)file andMaskFile:(NSString*)maskFile andType:(BOOL)type;
 {
-    self = [super initWithFile:file];
+    self = [super init];
     if (self) {
+        _mask = [[CCSprite alloc] initWithFile:file];
         _type = type;
-        [self buildMaskWithTexture:[[CCTextureCache sharedTextureCache] addImage:maskFile]];
-    }
-    
+        [self builtWithTexture:_mask andTexture:[[CCTextureCache sharedTextureCache] addImage:maskFile]];
+    }    
     return self;
+}
+
+- (void)builtWithTexture:(CCSprite *)mask andTexture:(CCTexture2D*)texture
+{
+    [_mask setAnchorPoint:CGPointZero];
+    [self buildMaskWithTexture:texture];
 }
 
 -(void) buildMaskWithTexture:(CCTexture2D*)texture
@@ -78,20 +93,20 @@
     NSString *shaderName =  _type ? @"MaskPositive.fsh" : @"MaskNegative.fsh";
     const GLchar * fragmentSource = (GLchar*) [[NSString stringWithContentsOfFile:[[CCFileUtils sharedFileUtils] fullPathFromRelativePath:shaderName] encoding:NSUTF8StringEncoding error:nil] UTF8String];
     
-    self.shaderProgram = [[CCGLProgram alloc] initWithVertexShaderByteArray:ccPositionTextureA8Color_vert
+    _mask.shaderProgram = [[CCGLProgram alloc] initWithVertexShaderByteArray:ccPositionTextureA8Color_vert
                                                     fragmentShaderByteArray:fragmentSource];
-    [self.shaderProgram addAttribute:kCCAttributeNamePosition index:kCCVertexAttrib_Position];
-    [self.shaderProgram addAttribute:kCCAttributeNameTexCoord index:kCCVertexAttrib_TexCoords];
-    [self.shaderProgram addAttribute:kCCAttributeNameColor index:kCCVertexAttrib_Color];
-    [self.shaderProgram link];
-    [self.shaderProgram updateUniforms];
+    [_mask.shaderProgram addAttribute:kCCAttributeNamePosition index:kCCVertexAttrib_Position];
+    [_mask.shaderProgram addAttribute:kCCAttributeNameTexCoord index:kCCVertexAttrib_TexCoords];
+    [_mask.shaderProgram addAttribute:kCCAttributeNameColor index:kCCVertexAttrib_Color];
+    [_mask.shaderProgram link];
+    [_mask.shaderProgram updateUniforms];
     
-    _maskLocation = glGetUniformLocation(self.shaderProgram->program_, "u_overlayTexture");
+    _maskLocation = glGetUniformLocation(_mask.shaderProgram->program_, "u_overlayTexture");
     glUniform1i(_maskLocation, 1);
     _maskTexture = texture;
     [_maskTexture setAliasTexParameters];
     
-    [self.shaderProgram use];
+    [_mask.shaderProgram use];
     ccGLBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, [_maskTexture name]);
@@ -100,22 +115,23 @@
 
 -(void) draw
 {    
-    CC_NODE_DRAW_SETUP();
+    DRAW_SETUP();
     
     ccGLEnableVertexAttribs(kCCVertexAttribFlag_PosColorTex);
     ccGLBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    [shaderProgram_ setUniformForModelViewProjectionMatrix];
+    [_mask.shaderProgram setUniformForModelViewProjectionMatrix];
     
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture( GL_TEXTURE_2D, [texture_ name] );
+    glBindTexture( GL_TEXTURE_2D, [_mask.texture name] );
     glUniform1i(_textureLocation, 0);
     
     glActiveTexture(GL_TEXTURE1);
     glBindTexture( GL_TEXTURE_2D, [_maskTexture name] );
     glUniform1i(_maskLocation, 1);
     
-    #define kQuadSize sizeof(quad_.bl)
-    long offset = (long)&quad_;
+    #define kQuadSize sizeof(_mask.quad.bl)
+    ccV3F_C4B_T2F_Quad q = _mask.quad;
+    long offset = (long)&q;
     
     NSInteger diff = offsetof( ccV3F_C4B_T2F, vertices);
     glVertexAttribPointer(kCCVertexAttrib_Position, 3, GL_FLOAT, GL_FALSE, kQuadSize, (void*) (offset + diff));
@@ -130,10 +146,30 @@
     glActiveTexture(GL_TEXTURE0);
 }
 
+-(void)updateWithSprite:(CCSprite*)sprite
+{
+    [_mask.shaderProgram release];
+    [_mask release];
+    _mask = nil;
+    
+    _mask = [sprite retain];
+    [self builtWithTexture:_mask andTexture:_maskTexture];
+}
+
+-(void)updateWithFile:(NSString *)file
+{
+    [self updateWithSprite:[[CCSprite alloc] initWithFile:file]];
+}
+
 - (void)dealloc
 {
+    [_mask release];
+    _mask = nil;
+    
     [_maskTexture release];
-    [shaderProgram_ release];
+    _maskTexture = nil;
+    
+    [_mask.shaderProgram release];
     
     [super dealloc];
 }
