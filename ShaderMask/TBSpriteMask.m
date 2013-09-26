@@ -13,7 +13,7 @@ do {                                                                            
     ccGLEnable( _mask.glServerState );                                              \
     NSAssert1(_mask.shaderProgram, @"No shader program set for node: %@", _mask);   \
     [_mask.shaderProgram use];                                                      \
-    [_mask.shaderProgram setUniformForModelViewProjectionMatrix];                   \
+    [_mask.shaderProgram setUniformsForBuiltins];                   \
 } while(0)                                                                          \
 
 @implementation TBSpriteMask
@@ -101,7 +101,7 @@ do {                                                                            
     [_mask.shaderProgram link];
     [_mask.shaderProgram updateUniforms];
     
-    _maskLocation = glGetUniformLocation(_mask.shaderProgram->program_, "u_overlayTexture");
+    _maskLocation = glGetUniformLocation(_mask.shaderProgram->_program, "u_overlayTexture");
     glUniform1i(_maskLocation, 1);
     _maskTexture = texture;
     [_maskTexture setAliasTexParameters];
@@ -119,7 +119,7 @@ do {                                                                            
     
     ccGLEnableVertexAttribs(kCCVertexAttribFlag_PosColorTex);
     ccGLBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    [_mask.shaderProgram setUniformForModelViewProjectionMatrix];
+    [_mask.shaderProgram setUniformsForBuiltins];
     
     glActiveTexture(GL_TEXTURE0);
     glBindTexture( GL_TEXTURE_2D, [_mask.texture name] );
