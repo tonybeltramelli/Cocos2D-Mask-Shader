@@ -4,13 +4,17 @@
 ##Mask sprite with OpenGL ES 2.0 shader in Cocos2D
 (Adapted from <https://github.com/HarrisonJackson/Cocos2D-HJMasked-Sprite>)
 
+#Branches
+* master : Cocos2D 2.1 support
+* Cocos2D-2.0-support : <https://github.com/tonybeltramelli/Cocos2D-Mask-Shader/tree/Cocos2D-2.0-support>
+
 Getting started :
 
 * Copy the files of the src folder into your project;
 * Don't forget to add the .fsh files to the "Copy Bundles Resources" in "Build Phases" tab;
 * Make sure that the .fsh files are not in the "Compile Sources";
 
-![Cocos2D-Mask-Shader - preview](https://raw.github.com/tonybeltramelli/Cocos2D-Mask-Shader/master/ShaderMask/Resources/preview.jpg)
+![Cocos2D-Mask-Shader - preview](https://raw.github.com/tonybeltramelli/Cocos2D-Mask-Shader/master/Cocos2DMaskShader/Resources/preview.jpg)
 
 Usage :
 ```objc
