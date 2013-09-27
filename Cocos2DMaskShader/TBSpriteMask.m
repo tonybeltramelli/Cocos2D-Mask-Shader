@@ -13,7 +13,11 @@ do {                                                                            
     ccGLEnable( _mask.glServerState );                                              \
     NSAssert1(_mask.shaderProgram, @"No shader program set for node: %@", _mask);   \
     [_mask.shaderProgram use];                                                      \
+<<<<<<< HEAD:Cocos2DMaskShader/TBSpriteMask.m
     [_mask.shaderProgram setUniformsForBuiltins];                                   \
+=======
+    [_mask.shaderProgram setUniformsForBuiltins];                   \
+>>>>>>> 3c01724ad42db5e51c0a2f0b25c6faaac0a592ab:ShaderMask/TBSpriteMask.m
 } while(0)                                                                          \
 
 @implementation TBSpriteMask
