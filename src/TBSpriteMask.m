@@ -161,6 +161,18 @@ do {                                                                            
     [self updateWithSprite:[[CCSprite alloc] initWithFile:file]];
 }
 
+-(CCTexture2D *)getTexture
+{
+    CCRenderTexture *renderTexture = [CCRenderTexture renderTextureWithWidth:_mask.contentSize.width height:_mask.contentSize.height];
+    [renderTexture begin];
+    _mask.flipY = YES;
+    [_mask draw];
+    _mask.flipY = NO;
+    [renderTexture end];
+    
+    return renderTexture.sprite.texture;
+}
+
 - (void)dealloc
 {
     [_mask release];

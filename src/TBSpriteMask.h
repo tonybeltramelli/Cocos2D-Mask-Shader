@@ -30,4 +30,6 @@
 -(void)updateWithSprite:(CCSprite*)sprite;
 -(void)updateWithFile:(NSString *)file;
 
+-(CCTexture2D *)getTexture;
+
 @end

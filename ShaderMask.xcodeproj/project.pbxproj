@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		98215A4116BD7A6100366FBA /* mask2.png in Resources */ = {isa = PBXBuildFile; fileRef = 98215A4016BD7A6100366FBA /* mask2.png */; };
 		98A8BC6A16B43C3500F75E63 /* MaskNegative.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 98A8BC6816B43C0D00F75E63 /* MaskNegative.fsh */; };
+		98AF09EB17F57899006E890D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 98AF09EA17F57899006E890D /* Default-568h@2x.png */; };
 		98F0B49B16B41A3D0063D2C5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98F0B49A16B41A3D0063D2C5 /* QuartzCore.framework */; };
 		98F0B49D16B41A3D0063D2C5 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98F0B49C16B41A3D0063D2C5 /* OpenGLES.framework */; };
 		98F0B49F16B41A3D0063D2C5 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98F0B49E16B41A3D0063D2C5 /* OpenAL.framework */; };
@@ -144,6 +145,7 @@
 /* Begin PBXFileReference section */
 		98215A4016BD7A6100366FBA /* mask2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mask2.png; path = Resources/mask2.png; sourceTree = "<group>"; };
 		98A8BC6816B43C0D00F75E63 /* MaskNegative.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = MaskNegative.fsh; sourceTree = "<group>"; };
+		98AF09EA17F57899006E890D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Resources/Default-568h@2x.png"; sourceTree = "<group>"; };
 		98F0B49616B41A3D0063D2C5 /* ShaderMask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShaderMask.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98F0B49A16B41A3D0063D2C5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		98F0B49C16B41A3D0063D2C5 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -489,6 +491,7 @@
 		98F0B4AD16B41A3D0063D2C5 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				98AF09EA17F57899006E890D /* Default-568h@2x.png */,
 				98215A4016BD7A6100366FBA /* mask2.png */,
 				98F0B4AE16B41A3D0063D2C5 /* Default.png */,
 				98F0B4B016B41A3D0063D2C5 /* Default-Landscape~ipad.png */,
@@ -920,6 +923,7 @@
 				98F0B63B16B41D0E0063D2C5 /* image_to_mask.jpg in Resources */,
 				98F0B63C16B41D0E0063D2C5 /* mask.png in Resources */,
 				98215A4116BD7A6100366FBA /* mask2.png in Resources */,
+				98AF09EB17F57899006E890D /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
