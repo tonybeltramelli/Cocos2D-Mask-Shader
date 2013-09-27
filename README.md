@@ -14,7 +14,7 @@ Getting started :
 
 Usage :
 ```objc
-		// EXAMPLES MaskNegative
+        // EXAMPLES MaskNegative
         //
         // example 1
         
@@ -84,6 +84,15 @@ Usage :
         // example 2
         
         [maskedSprite updateWithFile:@"mask.png"];
+
+        //
+        // Create sprite with resulting texture
+        //
+
+        CCSprite *resultingSprite = [CCSprite spriteWithTexture:[_maskedSpriteNegative getTexture]];
+        resultingSprite.scale = 0.5;
+        resultingSprite.position = ccp(size.width/2, size.height/2);
+        [self addChild:resultingSprite];
 ```
 
 Have fun !
