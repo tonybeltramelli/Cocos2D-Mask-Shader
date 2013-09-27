@@ -4,7 +4,8 @@
 ##Mask sprite with OpenGL ES 2.0 shader in Cocos2D
 (Adapted from <https://github.com/HarrisonJackson/Cocos2D-HJMasked-Sprite>)
 
-#Branches
+Branches :
+
 * master : Cocos2D 2.1 support
 * Cocos2D-2.0-support : <https://github.com/tonybeltramelli/Cocos2D-Mask-Shader/tree/Cocos2D-2.0-support>
 
